@@ -1,0 +1,17 @@
+{
+  "name": "puyang-pet-market",
+  "version": "1.0.0",
+  "description": "濮阳市同城宠物交易、领养、配种平台",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": ["濮阳", "宠物交易", "猫狗领养", "同城宠物"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1"
+  }
+}
