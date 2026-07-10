@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人中心</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <h1>🐾 濮阳同城宠物市场</h1>
+    <div class="nav">
+      <a href="index.html">首页</a>
+      <a href="publish.html">发布宠物</a>
+      <a href="login.html">登录/注册</a>
+      <a href="mine.html">个人中心</a>
+    </div>
+  </div>
+</header>
+
+<div class="container main">
+  <div id="userInfo"></div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+const user = getLoginUser()
+const wrap = document.getElementById('userInfo')
+if (!user) {
+  wrap.innerHTML = `
+    <div class="empty">
+      <p>暂未登录，请先登录账号</p>
+      <br>
+      <a href="login.html" class="submit-btn" style="width:200px;margin:0 auto;display:block;">去登录</a>
+    </div>
+  `
+} else {
+  wrap.innerHTML = `
+    <h2>欢迎你，${user.name}</h2>
+    <p>手机号：${user.phone}</p>
+    <p>所在城市：濮阳市</p>
+    <br>
+    <a href="publish.html" class="submit-btn">发布宠物信息</a>
+    <button id="logoutBtn" class="submit-btn" style="background:#999;margin-top:10px;">退出登录</button>
+  `
+  // 退出登录
+  document.getElementById('logoutBtn').onclick = () => {
+    Storage.set('loginUser', null)
+    alert('已退出登录')
+    goPage('index.html')
+  }
+}
+</script>
+</body>
+</html>
