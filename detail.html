@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宠物详情</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <h1>🐾 濮阳同城宠物市场</h1>
+    <div class="nav">
+      <a href="index.html">首页</a>
+      <a href="publish.html">发布宠物</a>
+      <a href="login.html">登录/注册</a>
+      <a href="mine.html">个人中心</a>
+    </div>
+  </div>
+</header>
+
+<div class="container main" id="detailBox"></div>
+
+<script src="js/main.js"></script>
+<script>
+const params = new URLSearchParams(location.search)
+const petId = Number(params.get('id'))
+const petList = Storage.get('petList')
+const pet = petList.find(item => item.id === petId)
+if (!pet) {
+  document.getElementById('detailBox').innerHTML = '<p class="empty">未找到该宠物信息</p>'
+} else {
+  document.getElementById('detailBox').innerHTML = `
+    <div class="detail-card">
+      <img class="detail-img" src="${pet.img || 'https://via.placeholder.com/800x400?text=无图片'}">
+      <h2>${pet.title}</h2>
+      <div class="row"><span>品类：</span>${pet.type}</div>
+      <div class="row"><span>区域：</span>濮阳市${pet.area}</div>
+      <div class="row price-row"><span>价格：</span>${pet.price == 0 ? '免费领养' : '¥' + pet.price}</div>
+      <div class="row"><span>联系：</span>${pet.contact}</div>
+      <div class="row"><span>发布时间：</span>${pet.time}</div>
+      <div class="desc-block">
+        <h3>宠物介绍</h3>
+        <p>${pet.desc || '暂无描述'}</p>
+      </div>
+      <a href="index.html" class="back-btn">返回首页</a>
+    </div>
+  `
+}
+</script>
+</body>
+</html>
