@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>濮阳宠物交易网</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <h1>🐾 濮阳同城宠物市场</h1>
+    <div class="nav">
+      <a href="index.html">首页</a>
+      <a href="publish.html">发布宠物</a>
+      <a href="login.html">登录/注册</a>
+      <a href="mine.html">个人中心</a>
+    </div>
+  </div>
+</header>
+
+<div class="container main">
+  <div class="filter-box">
+    <h3>濮阳区域筛选</h3>
+    <select id="areaSelect">
+      <option value="">全部区域</option>
+      <option value="华龙区">华龙区</option>
+      <option value="濮阳县">濮阳县</option>
+      <option value="清丰县">清丰县</option>
+      <option value="南乐县">南乐县</option>
+      <option value="范县">范县</option>
+      <option value="台前县">台前县</option>
+    </select>
+    <select id="typeSelect">
+      <option value="">全部宠物</option>
+      <option value="猫咪">猫咪</option>
+      <option value="狗狗">狗狗</option>
+      <option value="小宠">仓鼠/兔子/鸟</option>
+      <option value="配种">宠物配种</option>
+      <option value="领养">免费领养</option>
+    </select>
+    <button id="searchBtn">筛选</button>
+  </div>
+  <div class="pet-list" id="petList"></div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+function renderList(area = '', type = '') {
+  let list = Storage.get('petList').reverse()
+  if (area) list = list.filter(item => item.area === area)
+  if (type) list = list.filter(item => item.type === type)
+  const wrap = document.getElementById('petList')
+  if (!list.length) {
+    wrap.innerHTML = '<p class="empty">暂无濮阳本地宠物信息，去发布一条吧！</p>'
+    return
+  }
+  let html = ''
+  list.forEach(item => {
+    html += `
+      <div class="pet-card" onclick="goDetail(${item.id})">
+        <img src="${item.img || 'https://via.placeholder.com/300x180?text=无图片'}" alt="">
+        <div class="info">
+          <h4>${item.title}</h4>
+          <p>品类：${item.type}</p>
+          <p>区域：濮阳市${item.area}</p>
+          <p class="price">${item.price == 0 ? '免费领养' : '¥' + item.price}</p>
+          <p class="time">${item.time}</p>
+        </div>
+      </div>
+    `
+  })
+  wrap.innerHTML = html
+}
+renderList()
+document.getElementById('searchBtn').onclick = () => {
+  const area = document.getElementById('areaSelect').value
+  const type = document.getElementById('typeSelect').value
+  renderList(area, type)
+}
+</script>
+</body>
+</html>
