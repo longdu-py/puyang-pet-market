@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>发布宠物 - 濮阳宠物交易</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <h1>🐾 濮阳同城宠物市场</h1>
+    <div class="nav">
+      <a href="index.html">首页</a>
+      <a href="publish.html">发布宠物</a>
+      <a href="login.html">登录/注册</a>
+      <a href="mine.html">个人中心</a>
+    </div>
+  </div>
+</header>
+
+<div class="container main form-wrap">
+  <h2>发布濮阳本地宠物信息</h2>
+  <form id="publishForm">
+    <div class="form-item">
+      <label>标题</label>
+      <input type="text" name="title" placeholder="英短幼猫出售" required>
+    </div>
+    <div class="form-item">
+      <label>宠物类型</label>
+      <select name="type" required>
+        <option value="猫咪">猫咪</option>
+        <option value="狗狗">狗狗</option>
+        <option value="小宠">仓鼠/兔子/鸟</option>
+        <option value="配种">宠物配种</option>
+        <option value="领养">免费领养</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <label>所在区县</label>
+      <select name="area" required>
+        <option value="华龙区">华龙区</option>
+        <option value="濮阳县">濮阳县</option>
+        <option value="清丰县">清丰县</option>
+        <option value="南乐县">南乐县</option>
+        <option value="范县">范县</option>
+        <option value="台前县">台前县</option>
+      </select>
+    </div>
+    <div class="form-item">
+      <label>价格（免费填0）</label>
+      <input type="number" name="price" value="0" required>
+    </div>
+    <div class="form-item">
+      <label>联系方式</label>
+      <input type="text" name="contact" placeholder="微信/手机号" required>
+    </div>
+    <div class="form-item">
+      <label>宠物描述</label>
+      <textarea name="desc" rows="4" placeholder="年龄、疫苗、自提说明"></textarea>
+    </div>
+    <div class="form-item">
+      <label>上传图片</label>
+      <input type="file" id="imgUpload" accept="image/*">
+    </div>
+    <div class="form-item">
+      <button type="submit" class="submit-btn">提交发布</button>
+    </div>
+  </form>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+let imgUrl = ''
+// 图片转base64本地存储
+document.getElementById('imgUpload').onchange = function(e) {
+  const file = e.target.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = function() {
+    imgUrl = reader.result
+  }
+}
+
+document.getElementById('publishForm').onsubmit = function(e) {
+  e.preventDefault()
+  const data = {
+    id: createId(),
+    title: this.title.value,
+    type: this.type.value,
+    area: this.area.value,
+    price: this.price.value,
+    contact: this.contact.value,
+    desc: this.desc.value,
+    img: imgUrl,
+    time: formatTime(),
+    uid: getLoginUser()?.id || 0
+  }
+  const list = Storage.get('petList')
+  list.push(data)
+  Storage.set('petList', list)
+  alert('发布成功！')
+  goPage('index.html')
+}
+</script>
+</body>
+</html>
