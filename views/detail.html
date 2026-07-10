@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宠物详情 - 濮阳宠物交易</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <h1>🐾 濮阳同城宠物市场</h1>
+    <div class="nav">
+      <a href="/">首页</a>
+      <a href="/publish">发布宠物</a>
+      <a href="/login">登录/注册</a>
+      <a href="/mine">个人中心</a>
+    </div>
+  </div>
+</header>
+
+<div class="container main" id="detailBox">
+  <!-- 详情JS渲染 -->
+</div>
+
+<script>
+const id = new URLSearchParams(location.search).get('id');
+fetch(`/api/pet/${id}`)
+  .then(res=>res.json())
+  .then(item=>{
+    const box = document.getElementById('detailBox');
+    box.innerHTML = `
+      <div class="detail-card">
+        <img src="${item.imgUrl}" class="detail-img">
+        <h2>${item.title}</h2>
+        <div class="row"><span>品类：</span>${item.type}</div>
+        <div class="row"><span>所在区域：</span>濮阳市${item.area}</div>
+        <div class="row price-row"><span>价格：</span>${item.price==0?'免费领养':'¥'+item.price}</div>
+        <div class="row"><span>发布时间：</span>${item.time}</div>
+        <div class="row"><span>联系方式：</span>${item.contact}</div>
+        <div class="desc-block">
+          <h3>宠物介绍</h3>
+          <p>${item.desc}</p>
+        </div>
+        <a href="/" class="back-btn">返回首页</a>
+      </div>
+    `
+  })
+</script>
+</body>
+</html>
